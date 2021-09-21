@@ -1,30 +1,21 @@
-import threading
-import time
+import codecs
 
-def print_thread(ptr):
-        lock = threading.Lock()
-        lock.acquire()
-        print (ptr)
-        time.sleep(1)
-        lock.release()
+try:
+    fl1 = codecs.open('test_f.txt','r','utf-8')
+    fl2 = codecs.open('test_rev.txt','w')
+    text = fl1.read()
+    fl2.write(text[::-1])
+finally:
+    fl1.close()
+    fl2.close()
 
-class cointingThread(threading.Thread):
-        def __init__(self,num_start):
-                threading.Thread.__init__(self)
-                self.daemon=True
-                self.start_num=num_start
-
-        def run(self):
-                while self.start_num>0:
-                        print_thread(str(self.getName())+":"+str(self.start_num))
-                        self.start_num=self.start_num-1
-                        
-
-print ('\--------')
-th1=cointingThread(10)
-th2=cointingThread(10)
-th1.start()
-time.sleep(1)
-th2.start()
+try:
+    fl1 = codecs.open('test_f.txt', 'r','utf-8')
+    fl2 = codecs.open('test_rev.txt', 'r')
+    print(fl1.read())
+    print(fl2.read())
+finally:
+    fl1.close()
+    fl2.close()
 
 
